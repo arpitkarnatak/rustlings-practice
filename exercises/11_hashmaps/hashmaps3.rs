@@ -28,6 +28,19 @@ fn build_scores_table(results: &str) -> HashMap<&str, TeamScores> {
         let team_2_score: u8 = split_iterator.next().unwrap().parse().unwrap();
 
         // TODO: Populate the scores table with the extracted details.
+        if scores.contains_key(team_1_name) {
+            scores.get_mut(team_1_name).unwrap().goals_conceded = scores.get_mut(team_1_name).unwrap().goals_conceded + team_2_score;
+            scores.get_mut(team_1_name).unwrap().goals_scored = scores.get_mut(team_1_name).unwrap().goals_scored + team_1_score;
+        } else {
+            scores.insert(team_1_name, TeamScores{goals_conceded: team_2_score, goals_scored: team_1_score});
+        }
+
+        if scores.contains_key(team_2_name) {
+            scores.get_mut(team_2_name).unwrap().goals_conceded = scores.get_mut(team_2_name).unwrap().goals_conceded + team_1_score;
+            scores.get_mut(team_2_name).unwrap().goals_scored = scores.get_mut(team_2_name).unwrap().goals_scored + team_2_score;
+        }else {
+            scores.insert(team_2_name, TeamScores{goals_conceded: team_1_score, goals_scored: team_2_score});
+        }
         // Keep in mind that goals scored by team 1 will be the number of goals
         // conceded by team 2. Similarly, goals scored by team 2 will be the
         // number of goals conceded by team 1.
